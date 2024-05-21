@@ -1,0 +1,2 @@
+[vms]
+192.168.122.16 ansible_user=sulav

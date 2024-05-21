@@ -1,0 +1,36 @@
+- name: Create templates on the remote host
+  template:
+
+    ## Specify the source template file. If only one source
+    
+    ## src: ../templates/my_app.conf.j2
+    
+    # Specify the source template file with a variable. This allows for multiple templates using a loop.
+
+    src: ../templates/{{ item }}.j2
+
+    # Specify the destination path on the remote host, owner ,group of the file and set the permissions to read and write for all 
+    dest: /etc/{{ item }}
+    owner: root
+    group: root
+    mode: 0666
+  become: true
+
+  # Loop through a list of template 
+  loop:
+    - my_app.conf
+    - compose_file_conf
+
+# - name: Print the environment
+#   debug:
+#     msg: "The application environment is set to {{ APP_ENVIRONMENT }}"
+# - name: Print server port
+#   debug:
+#     msg: "The server port is set to {{ SERVER_PORT }}"
+# - name: Print API link
+#   debug:
+#     msg: "The API link is set to {{ API_LINK }}"
+# - name: Print network
+#   debug:
+#     msg: "The network is set to {{ NETWORK }}"
+    

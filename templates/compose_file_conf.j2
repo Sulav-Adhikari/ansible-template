@@ -1,0 +1,22 @@
+networks:
+  {{ NETWORK }}:
+    external: true
+
+services:
+  {{ SERVICE_NAME }}:
+    image: "summa:dev"
+    restart: always
+    env_file:
+      - ./.env
+    networks:
+      - {{ NETWORK }}
+    volumes:
+      - ./storage:/var/www/html/storage
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.api.loadbalancer.server.port={{ SERVER_PORT }}"
+      - "traefik.http.services.api.loadbalancer.server.scheme=http"
+      - "traefik.http.routers.api.rule=Host(`{{ API_LINK }}`)"
+      - "traefik.http.routers.api.entrypoints=websecure"
+      - "traefik.http.routers.api.tls.certresolver=production"
+

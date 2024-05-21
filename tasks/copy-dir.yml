@@ -1,0 +1,19 @@
+- name : Copy testdb
+  synchronize:
+    src: 'files/archive/sulav_testdb'
+    dest: '/home/sulav'
+
+- name : Copy testdev
+  synchronize:
+    src: 'files/archive/sulav_testdev'
+    dest: '/home/sulav'
+
+- name : Copy testprod
+  synchronize:
+    src: 'files/archive/sulav_testprod'
+    dest: '/home/sulav'
+
+- name : Copy teststaging
+  synchronize:
+    src: 'files/archive/sulav_teststaging'
+    dest: '/home/sulav'

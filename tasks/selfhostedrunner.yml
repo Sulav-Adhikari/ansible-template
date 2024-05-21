@@ -1,0 +1,51 @@
+  # - name: Ensure /opt directory exists
+  #   ansible.builtin.file:
+  #     path: /opt
+  #     state: directory
+  #     mode: '0755'
+  #   become: true
+
+  # - name: Ensure /opt/action-runner directory exists
+  #   ansible.builtin.file:
+  #     path: /opt/action-runner
+  #     state: directory
+  #     mode: '0755'
+  #   become: true
+    
+  
+  # - name: Download the latest runner package
+  #   ansible.builtin.get_url:
+  #     url: https://github.com/actions/runner/releases/download/v2.316.1/actions-runner-linux-x64-2.316.1.tar.gz
+  #     dest: /opt/actions-runner-linux-x64-2.316.1.tar.gz
+  #     mode: '0644'
+  #   become: true
+
+  # - name: Extract
+  #   ansible.builtin.command: 
+  #     cmd: "sudo tar xzf /opt/actions-runner-linux-x64-2.316.1.tar.gz -C /opt/action-runner"
+  #   become: true
+
+  # - name: Set ownership and permissions for /opt/action-runner
+  #   ansible.builtin.command:
+  #     cmd: "sudo chown -R $ansible_user:$ansible_user /opt/action-runner"
+  #   become: true
+
+
+  # - name: Run configuration script
+  #   ansible.builtin.command: 
+  #     cmd: "/opt/action-runner/config.sh --url $github_link --token $action_token  --unattended"
+  #   become: false
+
+  - name: Install SVC
+    ansible.builtin.command: 
+      cmd : " /opt/action-runner/svc.sh install"
+    become: true
+
+  # - name: Start SVC 
+  #   ansible.builtin.command: 
+  #     cmd : "sudo /opt/action-runner/svc.sh start"
+
+ 
+  # - name: Start the runner
+  #   ansible.builtin.command: 
+  #     cmd: "/opt/action-runner/run.sh"
