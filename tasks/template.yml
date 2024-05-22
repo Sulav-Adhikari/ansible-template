@@ -21,16 +21,16 @@
     - my_app.conf
     - compose_file_conf
 
-# - name: Print the environment
-#   debug:
-#     msg: "The application environment is set to {{ APP_ENVIRONMENT }}"
-# - name: Print server port
-#   debug:
-#     msg: "The server port is set to {{ SERVER_PORT }}"
-# - name: Print API link
-#   debug:
-#     msg: "The API link is set to {{ API_LINK }}"
-# - name: Print network
-#   debug:
-#     msg: "The network is set to {{ NETWORK }}"
+- name: Print the environment
+  debug:
+    msg: "The application environment is set to {{ APP_ENVIRONMENT }}"
+- name: Print server port
+  debug:
+    msg: "The server port is set to {{ SERVER_PORT }}"
+- name: Print API link
+  debug:
+    msg: "The API link is set to {{ API_LINK }}"
+- name: Print network
+  debug:
+    msg: "The network is set to {{ NETWORK }}"
     
