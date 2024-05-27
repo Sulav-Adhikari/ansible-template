@@ -1,1 +1,0 @@
-{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"ansible_host","Source":"./modules/ansible_host","Dir":"modules/ansible_host"},{"Key":"ansible_provisioner","Source":"./modules/null-provisioner.tf","Dir":"modules/null-provisioner.tf"},{"Key":"provisioner","Source":"./modules/provisioner","Dir":"modules/provisioner"}]}
