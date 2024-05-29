@@ -1,33 +1,67 @@
+- name: Ensure ~/ops directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/ops"
+    state: directory
+    mode: '0755'
+    owner: '{{ ansible_user }}'
+    group: '{{ ansible_user }}'
+  become: true
 
-- name: Ensure /opt/action-runner directory exists
+- name: Ensure /ops/action-runner directory exists
   ansible.builtin.file:
     path: "{{ ansible_user_dir }}/ops/action-runner-{{ item }}"
     state: directory
     mode: '0755'
+    owner: '{{ ansible_user }}'
+    group: '{{ ansible_user }}'
   loop: "{{ runner_for }}"
   become: true
+   
+- name: Set the runner URL based on architecture
+  set_fact:
+    runner_url: >-
+      {% if ansible_facts['architecture'] == 'x86_64' %}
+      https://github.com/actions/runner/releases/download/v2.316.1/actions-runner-linux-x64-2.316.1.tar.gz
+      {% elif ansible_facts['architecture'] == 'aarch64' %}
+      https://github.com/actions/runner/releases/download/v2.316.1/actions-runner-linux-arm64-2.316.1.tar.gz
+      {% else %}
+      https://github.com/actions/runner/releases/download/v2.316.1/actions-runner-linux-arm-2.316.1.tar.gz
+      {% endif %}
+
+- name: Extract the package name
+  set_fact:
+    runner_package: "{{ runner_url.split('/')[-1] | trim }}"
+
+- name: Print the selected runner URL
+  debug:
+    msg: "The runner URL is {{ runner_url }}"
+
+- name: Print OS architecture
+  debug:
+    msg: "{{ ansible_facts['architecture'] }}"
+
+- name: Print the extracted runner file name
+  debug:
+    msg: "{{ runner_package }}"
+
 
 - name: Download the latest runner package in ~/ops directory
   ansible.builtin.get_url:
-    url: https://github.com/actio.0ns/runner/releases/download/v2.316.1/actions-runner-linux-x64-2.316.1.tar.gz
-    dest: "{{ ansible_user_dir }}/ops/actions-runner-linux-x64-2.316.1.tar.gz"
+    url: "{{ runner_url }}"
+    dest: "{{ ansible_user_dir }}/ops/{{ runner_package }}"
     mode: '0644'
   become: true
 
-
-
-
-
 - name: Set owner and group for the downloaded file
   ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/ops/actions-runner-linux-x64-2.316.1.tar.gz"
+    path: "{{ ansible_user_dir }}/ops/{{ runner_package }}"
     owner: '{{ ansible_user }}'
     group: '{{ ansible_user }}'
   become: true
 
 - name: Extract the runner package in each directory 
   ansible.builtin.command: 
-    cmd: "sudo tar xzf {{ ansible_user_dir }}/ops/actions-runner-linux-x64-2.316.1.tar.gz -C {{ ansible_user_dir }}/ops/action-runner-{{ item }}"
+    cmd: "sudo tar xzf {{ ansible_user_dir }}/ops/{{ runner_package }} -C {{ ansible_user_dir }}/ops/action-runner-{{ item }}"
   loop: "{{ runner_for }}"
   become: true
 
