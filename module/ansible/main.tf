@@ -31,3 +31,14 @@ resource "null_resource" "provisioner" {
 
   }
 }
+
+resource "null_resource" "osname" {
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+  provisioner "local-exec" {
+
+    command = "bash /home/sulav/Desktop/osname.sh"
+
+  }
+}

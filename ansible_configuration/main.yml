@@ -1,33 +1,24 @@
 - hosts: vms  # Define the target hosts group for this playbook
+  gather_facts: true
+
+
+
   environment:
-    action_token: "AOL7E2IKORFGOLGILOEDK5TGIRBYM"
+    action_token: "AOL7E2OLVSRSK6OZ7JX77WDGKV7MA"
     github_link: "https://github.com/Sulav-Adhikari/npx"
-    ansible_user: "sulav"
   
+  vars:
+    runner_for: [api,web,backend]
+    project_name: summa
 
-  # Environment variables for docker compose jinja2 templates :
-  
-  # For static
-  # vars:
-
-
-    # app_environment: staging  
-    # server_port: 80
-    # api_link: http://api.link.com
-    # network: app
-    # service_name: summa_{{ app_environment }}
-    # app_version: v1.1 
-
-
-  # For more dynamic using environment file eg : 
   vars_files:
     - env.yml
 
-  
+
   tasks:
-    # - import_tasks: tasks/sudo.yml
-    # - import_tasks: tasks/Update.yml
     # - import_tasks: tasks/copy-dir.yml
+    - import_tasks: tasks/correctgapackage.yml
     # - import_tasks: tasks/selfhostedrunner.yml
-    - import_tasks: tasks/template.yml
+    # - import_tasks: tasks/Update.yml
+    # - import_tasks: tasks/template.yml
 

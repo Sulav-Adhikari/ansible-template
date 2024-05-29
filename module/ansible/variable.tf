@@ -1,12 +1,12 @@
 variable "server_ip" {
   type = string
-  default = "192.168.122.196"
+  default = "192.168.122.107"
   
 }
 
 variable "server_user_name" {
   type = string
-  default = "master1"
+  default = "sulav"
   
 }
 

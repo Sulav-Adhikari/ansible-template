@@ -1,0 +1,26 @@
+- name: Print OS architecture
+  debug:
+    msg: "{{ ansible_facts['architecture'] }}"
+    
+- name: Set the runner URL based on architecture
+  set_fact:
+    runner_url: >-
+      {% if ansible_facts['architecture'] == 'x86_64' %}
+      https://github.com/actions/runner/releases/download/v2.316.1/actions-runner-linux-x64-2.316.1.tar.gz
+      {% elif ansible_facts['architecture'] == 'aarch64' %}
+      https://github.com/actions/runner/releases/download/v2.316.1/actions-runner-linux-arm64-2.316.1.tar.gz
+      {% else %}
+      https://github.com/actions/runner/releases/download/v2.316.1/actions-runner-linux-arm-2.316.1.tar.gz
+      {% endif %}
+
+- name: Print the selected runner URL
+  debug:
+    msg: "The runner URL is {{ runner_url }}"
+
+- name: Extract the package name
+  set_fact:
+    runner_package: "{{ runner_url.split('/')[-1]}}"
+
+- name: Print the extracted runner file name
+  debug:
+    msg: "{{ runner_package }}"

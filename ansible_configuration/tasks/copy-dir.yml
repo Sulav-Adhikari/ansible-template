@@ -1,19 +1,117 @@
-- name : Copy testdb
-  synchronize:
-    src: 'files/archive/sulav_testdb'
-    dest: '/home/sulav'
+# Directory setup for project
 
-- name : Copy testdev
-  synchronize:
-    src: 'files/archive/sulav_testdev'
-    dest: '/home/sulav'
+- name: Ensure destination directory '~/project_name' exists
+  ansible.builtin.file:
+    path: "{{  ansible_user_dir }}/{{ project_name }}"
+    state: directory
+    mode:  '0755'
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+  become: true
 
-- name : Copy testprod
-  synchronize:
-    src: 'files/archive/sulav_testprod'
-    dest: '/home/sulav'
 
-- name : Copy teststaging
-  synchronize:
-    src: 'files/archive/sulav_teststaging'
-    dest: '/home/sulav'
+- name: Ensure dev directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/{{ project_name }}/dev"
+    state: directory
+    mode: '0755'
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+  become: true
+
+- name: Ensure prod directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/{{ project_name }}/prod"
+    state: directory
+    mode: '0755'
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+  become: true
+
+- name: Ensure staging directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/{{ project_name }}/staging"
+    state: directory
+    mode: '0755'
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+  become: true
+
+
+- name: Copy traefik configuration
+  ansible.builtin.copy:
+    src: 'files/project_name/dev/'
+    dest: '{{  ansible_user_dir }}/{{ project_name }}/dev'  
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+  become: true
+
+- name: Copy traefik configuration
+  ansible.builtin.copy:
+    src: 'files/project_name/prod/'
+    dest: '{{  ansible_user_dir }}/{{ project_name }}/prod'  
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+  become: true
+
+- name: Copy traefik configuration
+  ansible.builtin.copy:
+    src: 'files/project_name/staging/'
+    dest: '{{  ansible_user_dir }}/{{ project_name }}/staging'  
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+  become: true
+
+# Directory setup for operations
+
+- name: Ensure destination directory '~/ops/traefik' exists
+  ansible.builtin.file:
+    path: "{{  ansible_user_dir }}/ops/traefik"
+    state: directory
+    mode:  '0755'
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+  become: true
+
+- name: Copy traefik cansible_configuration/files/project_name/dev/storage ansible_configuration/files/project_name/dev/compose.yaml ansible_configuration/files/project_name/dev/deploy.shonfiguration
+  ansible.builtin.copy:
+    src: 'files/traefik/'
+    dest: '{{  ansible_user_dir }}/ops/traefik'  
+    mode: '0644'
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+  become: true
+
+- name: Set executable permissions on up.sh
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/ops/traefik/up.sh"
+    mode: '0755'
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+  become: true
+
+
+
+
+
+# - name : Copy testdb
+#   synchronize:
+#     src: 'files/archive/sulav_testdb'
+#     dest: '/home/sulav'
+
+# - name : Copy testdev
+#   synchronize:
+#     src: 'files/archive/sulav_testdev'
+#     dest: '/home/sulav'
+
+# - name : Copy testprod
+#   synchronize:
+#     src: 'files/archive/sulav_testprod'
+#     dest: '/home/sulav'
+
+# - name : Copy teststaging
+#   synchronize:
+#     src: 'files/archive/sulav_teststaging'
+#     dest: '/home/sulav'
+  # become: true
+  
