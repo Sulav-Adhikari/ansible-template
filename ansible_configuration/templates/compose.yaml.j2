@@ -4,7 +4,7 @@ networks:
 
 services:
   {{ SERVICE_NAME }}:
-    image: "summa:dev"
+    image: "summa: {{ APP_ENVIRONMENT }}"
     restart: always
     env_file:
       - ./.env

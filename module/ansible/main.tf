@@ -8,9 +8,9 @@ terraform {
 
 
 
-resource "ansible_host" "vms" { #### ansible host details
+resource "ansible_host" "ec2-instance" { #### ansible host details
   name   = "${var.server_ip}"     ### VM ip address 
-  groups = ["vms"]              ### name defined in hosts of ansible (ansible/inventories/hosts)
+  groups = ["ec2-instance"]              ### name defined in hosts of ansible (ansible/inventories/hosts)
   variables = {
     ansible_user                 = "${var.server_user_name}", ### VM username
     ansible_ssh_private_key_file = "${var.ssh_private_key_file}",

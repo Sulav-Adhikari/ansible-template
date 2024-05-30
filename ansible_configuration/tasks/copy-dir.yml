@@ -38,7 +38,7 @@
   become: true
 
 
-- name: Copy traefik configuration
+- name: Copy dev configuration
   ansible.builtin.copy:
     src: 'files/project_name/dev/'
     dest: '{{  ansible_user_dir }}/{{ project_name }}/dev'  
@@ -46,7 +46,7 @@
     group: "{{ ansible_user }}"
   become: true
 
-- name: Copy traefik configuration
+- name: Copy prod configuration
   ansible.builtin.copy:
     src: 'files/project_name/prod/'
     dest: '{{  ansible_user_dir }}/{{ project_name }}/prod'  
@@ -54,7 +54,7 @@
     group: "{{ ansible_user }}"
   become: true
 
-- name: Copy traefik configuration
+- name: Copy staging configuration
   ansible.builtin.copy:
     src: 'files/project_name/staging/'
     dest: '{{  ansible_user_dir }}/{{ project_name }}/staging'  
@@ -63,7 +63,6 @@
   become: true
 
 # Directory setup for operations
-
 - name: Ensure destination directory '~/ops/traefik' exists
   ansible.builtin.file:
     path: "{{  ansible_user_dir }}/ops/traefik"
@@ -73,45 +72,6 @@
     group: "{{ ansible_user }}"
   become: true
 
-- name: Copy traefik cansible_configuration/files/project_name/dev/storage ansible_configuration/files/project_name/dev/compose.yaml ansible_configuration/files/project_name/dev/deploy.shonfiguration
-  ansible.builtin.copy:
-    src: 'files/traefik/'
-    dest: '{{  ansible_user_dir }}/ops/traefik'  
-    mode: '0644'
-    owner: "{{ ansible_user }}"
-    group: "{{ ansible_user }}"
-  become: true
-
-- name: Set executable permissions on up.sh
-  ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/ops/traefik/up.sh"
-    mode: '0755'
-    owner: "{{ ansible_user }}"
-    group: "{{ ansible_user }}"
-  become: true
 
 
 
-
-
-# - name : Copy testdb
-#   synchronize:
-#     src: 'files/archive/sulav_testdb'
-#     dest: '/home/sulav'
-
-# - name : Copy testdev
-#   synchronize:
-#     src: 'files/archive/sulav_testdev'
-#     dest: '/home/sulav'
-
-# - name : Copy testprod
-#   synchronize:
-#     src: 'files/archive/sulav_testprod'
-#     dest: '/home/sulav'
-
-# - name : Copy teststaging
-#   synchronize:
-#     src: 'files/archive/sulav_teststaging'
-#     dest: '/home/sulav'
-  # become: true
-  

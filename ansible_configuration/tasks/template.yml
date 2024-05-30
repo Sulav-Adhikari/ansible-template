@@ -1,26 +1,46 @@
-- name: Create templates on the remote host
+- name: Deploy project template for compose file and bash script templates
   template:
-
-    ## Specify the source template file. If only one source
-    
-    ## src: ../templates/my_app.conf.j2
-    
-    # Specify the source template file with a variable. This allows for multiple templates using a loop.
-
     src: ../templates/{{ item }}.j2
-
-    # Specify the destination path on the remote host, owner ,group of the file and set the permissions to read and write for all 
-    dest: /etc/{{ item }}
-    owner: root
-    group: root
+    dest: "{{ ansible_user_dir }}/{{ project_name }}/{{ APP_ENVIRONMENT }}/{{ item }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
     mode: 0666
   become: true
-
-  # Loop through a list of template 
   loop:
-    - my_app.conf
-    - compose_file_conf
+    - compose.yaml
+    - deploy.sh
 
+- name: Set executable permissions on deploy.sh
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/{{ project_name }}/{{ APP_ENVIRONMENT }}/deploy.sh"
+    mode: '0755'
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+  become: true
+
+
+- name: Deploy Traefik templates
+  template:
+    src: ../templates/{{ item }}.j2
+    dest: "{{ ansible_user_dir }}/ops/traefik/{{ item }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: 0666
+  become: true
+  loop:
+    - traefik-compose.yaml
+    - traefik.yaml
+    - up.sh
+
+- name: Set executable permissions on up.sh
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/ops/traefik/up.sh"
+    mode: '0755'
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+  become: true
+
+  
 - name: Print the environment
   debug:
     msg: "The application environment is set to {{ APP_ENVIRONMENT }}"

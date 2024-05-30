@@ -1,24 +1,13 @@
-- hosts: vms  # Define the target hosts group for this playbook
+- hosts: ec2-instance  # Define the target hosts group for this playbook
   gather_facts: true
 
-  # environment:
-  #   action_token: "AOL7E2OVYJP52O7R4GB5XNDGK26QQ"
-  #   github_link: "https://github.com/Sulav-Adhikari/npx"
-  
-  vars:
-    runner_for: [api,web,backend]
-    project_name: summa
-    github_link: [https://github.com/Sulav-Adhikari/npx,https://github.com/Sulav-Adhikari/frontendCICD]
-    action_token: [AOL7E2OVYJP52O7R4GB5XNDGK26QQ,AOL7E2O644OTP4SQBPPWKZDGK3CXE]
 
   vars_files:
     - env.yml
 
 
   tasks:
-    # - import_tasks: tasks/copy-dir.yml
-    - import_tasks: tasks/correctgapackage.yml
+    - import_tasks: tasks/copy-dir.yml
+    - import_tasks: tasks/template.yml
     - import_tasks: tasks/selfhostedrunner.yml
     # - import_tasks: tasks/Update.yml
-    # - import_tasks: tasks/template.yml
-

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+cd /home/ubuntu/ops/traefik
+
+if [[ $1 ]]; then
+  docker compose down -v
+  exit 0
+fi
+
+mkdir -p config/certs
+
+docker compose up --build --detach
