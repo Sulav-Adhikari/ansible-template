@@ -14,7 +14,7 @@
 hostname ALL=(ALL) NOPASSWD: ALL
 ```
 
-### To see the name of ansible user execute `whoami` in the device running the ansible command.
+### To see the name of ansible user execute `whoami` in the device running the ansible command
 
 
 
