@@ -1,5 +1,4 @@
 # Directory setup for project
-
 - name: Ensure destination directory '~/project_name' exists
   ansible.builtin.file:
     path: "{{  ansible_user_dir }}/{{ project_name }}"
@@ -9,58 +8,36 @@
     group: "{{ ansible_user }}"
   become: true
 
-
-- name: Ensure dev directory exists
+- name: Ensure all environment directory exists
   ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/{{ project_name }}/dev"
+    path: "{{ ansible_user_dir }}/{{ project_name }}/{{ item }}"
     state: directory
     mode: '0755'
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
   become: true
+  loop: "{{ project_directory }}"
 
-- name: Ensure prod directory exists
+- name: Ensure standard directory storage exists in {{ ansible_user_dir }}/{{ project_name }}/{{ item }}
   ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/{{ project_name }}/prod"
+    path: "{{ ansible_user_dir }}/{{ project_name }}/{{ item }}/storage"
     state: directory
     mode: '0755'
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
   become: true
+  loop: "{{ project_directory }}"
 
-- name: Ensure staging directory exists
-  ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/{{ project_name }}/staging"
-    state: directory
-    mode: '0755'
+- name: Ensure compose.yaml and deploy.sh exists in each environment's directory
+  ansible.builtin.file: 
+    path: "{{ ansible_user_dir }}/{{ project_name }}/{{ item.0 }}/{{ item.1 }}"
+    state: touch
+    mode: "{{ '0775' if item.1.endswith('.sh') else '0664' }}"
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
   become: true
+  loop: "{{ project_directory | product(project_file) }}"
 
-
-- name: Copy dev configuration
-  ansible.builtin.copy:
-    src: 'files/project_name/dev/'
-    dest: '{{  ansible_user_dir }}/{{ project_name }}/dev'  
-    owner: "{{ ansible_user }}"
-    group: "{{ ansible_user }}"
-  become: true
-
-- name: Copy prod configuration
-  ansible.builtin.copy:
-    src: 'files/project_name/prod/'
-    dest: '{{  ansible_user_dir }}/{{ project_name }}/prod'  
-    owner: "{{ ansible_user }}"
-    group: "{{ ansible_user }}"
-  become: true
-
-- name: Copy staging configuration
-  ansible.builtin.copy:
-    src: 'files/project_name/staging/'
-    dest: '{{  ansible_user_dir }}/{{ project_name }}/staging'  
-    owner: "{{ ansible_user }}"
-    group: "{{ ansible_user }}"
-  become: true
 
 # Directory setup for operations
 - name: Ensure destination directory '~/ops/traefik' exists
@@ -71,6 +48,17 @@
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
   become: true
+
+- name: Ensure config directory exists within '~/ops/traefik'
+  ansible.builtin.file:
+    path: "{{  ansible_user_dir }}/ops/traefik/config"
+    state: directory
+    mode: '0755'
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+  become: true
+
+
 
 
 

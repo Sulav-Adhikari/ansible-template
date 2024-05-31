@@ -4,41 +4,35 @@
     dest: "{{ ansible_user_dir }}/{{ project_name }}/{{ APP_ENVIRONMENT }}/{{ item }}"
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
-    mode: 0666
+    mode: "{{ '0775' if item.endswith('.sh') else '0664' }}"
   become: true
   loop:
     - compose.yaml
     - deploy.sh
 
-- name: Set executable permissions on deploy.sh
-  ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/{{ project_name }}/{{ APP_ENVIRONMENT }}/deploy.sh"
-    mode: '0755'
-    owner: "{{ ansible_user }}"
-    group: "{{ ansible_user }}"
-  become: true
 
-
-- name: Deploy Traefik templates
+- name: Set Traefik compose and up.sh
   template:
     src: ../templates/{{ item }}.j2
     dest: "{{ ansible_user_dir }}/ops/traefik/{{ item }}"
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
-    mode: 0666
+    mode: "{{ '0775' if item.endswith('.sh') else '0664' }}"
   become: true
   loop:
     - traefik-compose.yaml
-    - traefik.yaml
     - up.sh
 
-- name: Set executable permissions on up.sh
-  ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/ops/traefik/up.sh"
-    mode: '0755'
+- name: Set Traefik config
+  template:
+    src: ../templates/{{ item }}.j2
+    dest: "{{ ansible_user_dir }}/ops/traefik/config/{{ item }}"
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
+    mode: "{{ '0775' if item.endswith('.sh') else '0664' }}"
   become: true
+  loop:
+    - traefik_config.yaml
 
   
 - name: Print the environment

@@ -1,0 +1,16 @@
+- name: Get the latest action version
+  shell: "curl -sL https://github.com/actions/runner/releases/latest | grep -m 1 -oP 'Release v\\d+\\.\\d+\\.\\d+' | cut -d ' ' -f 2"
+  register: version
+
+- set_fact:
+    latest_version: "{{ version.stdout }}"
+
+- debug:
+    msg: "Latest version is {{ latest_version }}"
+
+- set_fact:
+    runner_tar: "{{ latest_version | replace ('v','') }}"
+
+- debug:
+    msg: "tar file is {{ runner_tar }}"
+

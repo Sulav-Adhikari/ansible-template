@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /home/ubuntu/ops/traefik
+cd {{ ansible_user_dir }}/traefik
 
 if [[ $1 ]]; then
   docker compose down -v

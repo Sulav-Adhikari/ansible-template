@@ -1,34 +1,34 @@
+variable "env" {
+  description = "The environment to deploy to (dev, prod, staging)"
+  type        = string
+}
+
 variable "server_ip" {
-  type = string
-  default = "192.168.122.107"
-  
+  description = "Server IP address"
+  type        = string
 }
 
 variable "server_user_name" {
-  type = string
-  default = "sulav"
-  
+  description = "Server username"
+  type        = string
 }
 
 variable "ssh_private_key_file" {
-  
-  type = string
-  default = "~/.ssh/id_rsa"
+  description = "Path to the SSH private key file"
+  type        = string
 }
 
 variable "python_interpreter" {
-  
-  type = string
-  default = "/usr/bin/python3"
+  description = "Path to the Python interpreter"
+  type        = string
 }
 
 variable "ansible_inventory_file" {
-  type = string
-  default = "./inventory.yml"
-  
+  description = "Path to the Ansible inventory file"
+  type        = string
 }
 
 variable "ansible_playbook_file" {
-  type = string
-  default = "./ansible_configuration/main.yml"
+  description = "Path to the Ansible playbook file"
+  type        = string
 }

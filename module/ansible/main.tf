@@ -27,18 +27,7 @@ resource "null_resource" "provisioner" {
   }
   provisioner "local-exec" {
 
-    command = "ansible-playbook -i ${var.ansible_inventory_file} ${var.ansible_playbook_file} --ask-become-pass"
-
-  }
-}
-
-resource "null_resource" "osname" {
-  triggers = {
-    always_run = "${timestamp()}"
-  }
-  provisioner "local-exec" {
-
-    command = "bash /home/sulav/Desktop/osname.sh"
+    command = "ANSIBLE_ENV=${var.env} ansible-playbook -i ${var.ansible_inventory_file} ${var.ansible_playbook_file} --ask-become-pass"
 
   }
 }

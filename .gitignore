@@ -7,3 +7,8 @@
 
 # Ignore Terraform provider plugins
 .terraform/providers/
+
+#ignore env files
+env.yml
+
+env.*.yml
