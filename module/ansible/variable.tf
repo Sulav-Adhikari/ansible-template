@@ -1,6 +1,6 @@
 variable "env" {
   description = "The environment to deploy to (dev, prod, staging)"
-  type        = string
+  type        = list(string)
 }
 
 variable "server_ip" {
@@ -28,7 +28,24 @@ variable "ansible_inventory_file" {
   type        = string
 }
 
+variable "ansible_playbook_copy_file" {
+  description = "Path to the Ansible playbook file"
+  type        = string
+}
+
 variable "ansible_playbook_file" {
   description = "Path to the Ansible playbook file"
   type        = string
 }
+
+variable "namespace" {
+  description = "Namespace (e.g `template`)"
+  type        = string
+}
+
+variable "become_password" {
+  description = "sudo password"
+  type        = string
+}
+
+

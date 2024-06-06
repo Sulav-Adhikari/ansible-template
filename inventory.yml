@@ -1,1 +1,3 @@
 plugin: cloud.terraform.terraform_provider
+
+# [ec2-instance]

@@ -96,29 +96,29 @@
   become: true
 
 
-# #Configure self hosted runner for all runner_for
+#Configure self hosted runner for all runner_for
 
-# - name: Run configuration script
-#   ansible.builtin.command: 
-#     cmd: "{{ ansible_user_dir }}/ops/action-runner-{{ item.0.key }}/action-runner-{{ item.1 }}/config.sh --unattended --url {{ repositories[item.0.key]['github_link'] }} --token {{ repositories[item.0.key]['action_token'] }} --name {{ item.1 }}" 
-#   loop: "{{ repositories | dict2items | product(runner_for) }}"
-#   become: false
+- name: Run configuration script
+  ansible.builtin.command: 
+    cmd: "{{ ansible_user_dir }}/ops/action-runner-{{ item.0.key }}/action-runner-{{ item.1 }}/config.sh --unattended --url {{ repositories[item.0.key]['github_link'] }} --token {{ repositories[item.0.key]['action_token'] }} --name {{ item.1 }}" 
+  loop: "{{ repositories | dict2items | product(runner_for) }}"
+  become: false
 
-# #Install SVC on all runner_for i.e [api,web.backend]
-# - name: Install SVC for all 
-#   ansible.builtin.command:
-#     cmd: "sudo ./svc.sh install"
-#     chdir: "{{ ansible_user_dir }}/ops/action-runner-{{ item.0.key }}/action-runner-{{ item.1 }}"
-#   loop: "{{ repositories | dict2items | product(runner_for) }}"
-#   become: true
+#Install SVC on all runner_for i.e [api,web.backend]
+- name: Install SVC for all 
+  ansible.builtin.command:
+    cmd: "sudo ./svc.sh install"
+    chdir: "{{ ansible_user_dir }}/ops/action-runner-{{ item.0.key }}/action-runner-{{ item.1 }}"
+  loop: "{{ repositories | dict2items | product(runner_for) }}"
+  become: true
 
 
-# - name: Start SVC for all
-#   ansible.builtin.command: 
-#     cmd: "sudo ./svc.sh start"
-#     chdir: "{{ ansible_user_dir }}/ops/action-runner-{{ item.0.key }}/action-runner-{{ item.1 }}"
-#   loop: "{{ repositories | dict2items | product(runner_for) }}"
-#   become: true
+- name: Start SVC for all
+  ansible.builtin.command: 
+    cmd: "sudo ./svc.sh start"
+    chdir: "{{ ansible_user_dir }}/ops/action-runner-{{ item.0.key }}/action-runner-{{ item.1 }}"
+  loop: "{{ repositories | dict2items | product(runner_for) }}"
+  become: true
 
 # # # # - name: Start the runner
 # # # #   ansible.builtin.command: 
