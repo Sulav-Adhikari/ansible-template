@@ -12,3 +12,7 @@
 env.yml
 
 env.*.yml
+
+# tfvars and plan files
+*.tfvars
+*.out

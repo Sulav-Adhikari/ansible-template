@@ -7,4 +7,3 @@ namespace = "template"
 # ssh_private_key_file = "~/.ssh/wp/wp-devops"
 ssh_private_key_file = "~/.ssh/id_ed25519"
 # env = ["qa"]
-become_password = "ww1984"
