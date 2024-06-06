@@ -1,25 +1,11 @@
-- hosts: ec2-instance                                   # Define the target hosts group for this playbook
+- hosts: ec2-instance
   gather_facts: true
+  
+  vars_files:
+    - env.yml
 
-
-  # vars_files:
-  #   - env.yml
-
-  vars:
-    env: staging                                        # Default environment
-
-
+   
   tasks:
-
-    - name: Include environment-specific variables
-      include_vars: "{{ item }}"
-      with_items:
-        - env.yml                                       # Common variable for all environment
-        - "env.{{ lookup('env', 'ANSIBLE_ENV') }}.yml"  # Environment-specific variables
-      tags: always
-
-    - import_tasks: tasks/copy-dir.yml
-    - import_tasks: tasks/template.yml
-    # - import_tasks: tasks/runnerversion.yml
-    # - import_tasks: tasks/selfhostedrunner.yml
-    # - import_tasks: tasks/Update.yml
+    - import_tasks: tasks/Update.yml
+    - import_tasks: tasks/runnerversion.yml
+    - import_tasks: tasks/selfhostedrunner.yml

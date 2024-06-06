@@ -4,7 +4,7 @@ networks:
 
 services:
   {{ SERVICE_NAME }}:
-    image: "{{ project_name }}: {{ APP_ENVIRONMENT }}"
+    image: {{ project_name }}:{{ APP_ENVIRONMENT }}
     restart: always
     env_file:
       - ./.env
