@@ -1,14 +1,15 @@
 - hosts: ec2-instance
   gather_facts: true
 
-  tasks:
 
+
+
+  tasks:
     - name: Include environment-specific variables
       include_vars: "{{ item }}"
       with_items:
-        - env.yml                                       # Common variable for all environment
+        - env.yaml                                       # Common variable for all environment
         - "env.{{ lookup('env', 'ANSIBLE_ENV') }}.yaml"  # Environment-specific variables
       tags: always
-    - import_tasks: tasks/test.yaml
     - import_tasks: tasks/copy-dir.yml
     - import_tasks: tasks/template.yml

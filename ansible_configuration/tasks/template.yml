@@ -1,6 +1,6 @@
 - name: Deploy project template for compose file and bash script templates
   template:
-    src: ../templates/{{ item }}.j2
+    src: ../templates/project/{{ item }}.j2
     dest: "{{ ansible_user_dir }}/{{ project_name }}/{{ APP_ENVIRONMENT }}/{{ item }}"
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
@@ -13,27 +13,26 @@
 
 - name: Set Traefik compose and up.sh
   template:
-    src: ../templates/{{ item }}.j2
+    src: ../templates/traefik/{{ item }}.j2
     dest: "{{ ansible_user_dir }}/ops/traefik/{{ item }}"
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
     mode: "{{ '0775' if item.endswith('.sh') else '0664' }}"
   become: true
   loop:
-    - traefik-compose.yaml
+    - compose.yaml
     - up.sh
 
 - name: Set Traefik config
   template:
-    src: ../templates/{{ item }}.j2
+    src: ../templates/traefik/{{ item }}.j2
     dest: "{{ ansible_user_dir }}/ops/traefik/config/{{ item }}"
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
     mode: "{{ '0775' if item.endswith('.sh') else '0664' }}"
   become: true
   loop:
-    - traefik_config.yaml
-
+    - traefik.yaml
   
 - name: Print the environment
   debug:
@@ -43,7 +42,7 @@
     msg: "The server port is set to {{ SERVER_PORT }}"
 - name: Print API link
   debug:
-    msg: "The API link is set to {{ API_LINK }}"
+    msg: "The API link is set to {{ HOST }}"
 - name: Print network
   debug:
     msg: "The network is set to {{ NETWORK }}"

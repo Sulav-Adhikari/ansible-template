@@ -16,7 +16,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.services.api.loadbalancer.server.port={{ SERVER_PORT }}"
       - "traefik.http.services.api.loadbalancer.server.scheme=http"
-      - "traefik.http.routers.api.rule=Host(`{{ API_LINK }}`)"
+      - "traefik.http.routers.api.rule=Host(`{{ HOST }}`)"
       - "traefik.http.routers.api.entrypoints=websecure"
       - "traefik.http.routers.api.tls.certresolver=production"
 

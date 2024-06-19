@@ -11,6 +11,16 @@ module "ansible" {
   ansible_playbook_file      = var.ansible_playbook_file
   become_password            = var.become_password
   env                        = var.env
+  runner_for                 = var.runner_for
+  github_link                = var.github_link
+  github_link2               = var.github_link2
+  github_action_token        = var.github_action_token
+  github_action_token2        = var.github_action_token2
+  project_name               = var.project_name
+  host                       = var.host
+  network                    = var.network
+  server_port                = var.server_port
+
   # env = try(element(var.app_envs, count.index))
 
 }

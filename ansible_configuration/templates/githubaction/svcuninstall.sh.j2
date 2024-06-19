@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# Ensure the script is run with superuser (root) privileges
+if [ "$EUID" -ne 0 ]; then
+  echo "Please run as root"
+  exit 1
+fi
+
+# Stop the service
+echo "Stopping the service..."
+sudo ./svc.sh stop
+
+# Check if the stop command was successful
+if [ $? -eq 0 ]; then
+  echo "Service stopped successfully."
+else
+  echo "Failed to stop the service."
+  exit 1
+fi
+
+# Uninstall the service
+echo "Uninstalling the service..."
+sudo ./svc.sh uninstall
+
+# Check if the uninstall command was successful
+if [ $? -eq 0 ]; then
+  echo "Service uninstalled successfully."
+else
+  echo "Failed to uninstall the service."
+  exit 1
+fi
+
+echo "Script executed successfully."

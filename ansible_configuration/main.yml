@@ -2,10 +2,9 @@
   gather_facts: true
   
   vars_files:
-    - env.yml
+    - env.yaml
 
    
   tasks:
-    - import_tasks: tasks/Update.yml
-    - import_tasks: tasks/runnerversion.yml
-    - import_tasks: tasks/selfhostedrunner.yml
+#     - import_tasks: tasks/Update.yml
+    # - import_tasks: tasks/selfhostedrunner.yml

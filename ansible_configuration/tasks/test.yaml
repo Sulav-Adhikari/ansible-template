@@ -1,3 +1,0 @@
-- name: print test variables
-  debug:
-    msg: "The test variable is {{ project_directory }}"

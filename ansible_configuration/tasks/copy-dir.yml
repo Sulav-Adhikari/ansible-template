@@ -8,19 +8,21 @@
     group: "{{ ansible_user }}"
   become: true
 
-- name: Ensure all environment directory exists
-  ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/{{ project_name }}/{{ item }}"
-    state: directory
-    mode: '0755'
-    owner: "{{ ansible_user }}"
-    group: "{{ ansible_user }}"
-  become: true
-  loop: "{{ project_directory }}"
+# - name: Ensure all environment directory exists
+#   ansible.builtin.file:
+#     path: "{{ ansible_user_dir }}/{{ project_name }}/{{ item.split('_')[0] }}_{{ item.split('_')[1] }}_frontend"
+#     state: directory
+#     mode: '0755'
+#     owner: "{{ ansible_user }}"
+#     group: "{{ ansible_user }}"
+#   become: true
+#   loop: "{{ project_directory }}"
+
+
 
 - name: Ensure standard directory storage exists in {{ ansible_user_dir }}/{{ project_name }}/{{ item }}
   ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/{{ project_name }}/{{ item }}/storage"
+    path: "{{ ansible_user_dir }}/{{ project_name }}/{{ item }}"
     state: directory
     mode: '0755'
     owner: "{{ ansible_user }}"

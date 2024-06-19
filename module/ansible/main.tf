@@ -25,18 +25,63 @@ resource "ansible_host" "ec2-instance" { #### ansible host details
 }
 
 
-resource "null_resource" "set_env" {
+#set common environment variablbes i.e env.yaml
+
+resource "null_resource" "set_env1" {
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+  provisioner "local-exec" {
+    command = <<-EOT
+      cat <<EOF > ${path.module}/../../ansible_configuration/env.yaml
+      # Env for copy-dir.yaml
+      project_name: ${var.project_name}
+      project_directory: "{{ env.split(',') }}"
+      project_file: [compose.yaml, deploy.sh]
+      # Env for selfhostedrunner.yaml
+      runner_for: ${jsonencode(var.runner_for)}
+      
+      repositories:
+        npx:
+          github_link: "${var.github_link}"
+          action_token: "${var.github_action_token}"
+        frontendcicd:
+          github_link: "${var.github_link2}"
+          action_token: "${var.github_action_token2}"
+           
+        
+      EOF
+    EOT
+    # To add another repository, add another block within the EOF markers
+    # e.g., 
+    # cat <<EOF >> ${path.module}/../../ansible_configuration/env.yaml
+    #   glo2:
+    #     github_link: "${var.github_link2}"          #also set terraform variables github_link2 in module/ansible/variable.tf and root variable.tf
+    #     action_token: "${var.github_action_token2}" #also set terraform variables action_token2 in module/ansible/variable.tf and root variable.tf
+    # EOF
+
+  }
+
+}
+
+
+
+# ## Set environment specific variable i.e env.dev.yaml , env.qa.yaml
+
+resource "null_resource" "set_env2" {
   count = length(var.env)
   triggers = {
     always_run = "${timestamp()}"
   }
   provisioner "local-exec" {
     command = <<-EOT
-      echo 'APP_ENVIRONMENT: "${element(var.env, count.index)}"' > ${path.module}/../../ansible_configuration/env.${element(var.env, count.index)}.yaml
-      echo 'SERVER_PORT: "80"' >> ${path.module}/../../ansible_configuration/env.${element(var.env, count.index)}.yaml
-      echo 'API_LINK: "devops+api@gmail.com"' >> ${path.module}/../../ansible_configuration/env.${element(var.env, count.index)}.yaml
-      echo 'NETWORK: "app"' >> ${path.module}/../../ansible_configuration/env.${element(var.env, count.index)}.yaml
-      echo 'SERVICE_NAME: "${var.namespace}_${element(var.env, count.index)}"' >> ${path.module}/../../ansible_configuration/env.${element(var.env, count.index)}.yaml
+      cat <<EOF > ${path.module}/../../ansible_configuration/env.${element(var.env, count.index)}.yaml
+      APP_ENVIRONMENT: "${element(var.env, count.index)}"
+      SERVER_PORT: "${var.server_port}"
+      HOST: "${var.host}"
+      NETWORK: "${var.network}"
+      SERVICE_NAME: "${var.project_name}_${element(var.env, count.index)}"
+      EOF
     EOT
   }
 }
@@ -56,14 +101,14 @@ resource "null_resource" "copy_directory_and_template" {
 
 
 
-resource "null_resource" "action_runner" {
-  triggers = {
-    always_run = "${timestamp()}"
-  } 
-  provisioner "local-exec" {
-    command = "ansible-playbook -i ${var.ansible_inventory_file} ${var.ansible_playbook_file} --ask-become-pass"
+# resource "null_resource" "action_runner" {
+#   triggers = {
+#     always_run = "${timestamp()}"
+#   } 
+#   provisioner "local-exec" {
+#     command = "ansible-playbook -i ${var.ansible_inventory_file} ${var.ansible_playbook_file} --ask-become-pass"
 
-  }
-}
+#   }
+# }
 
 
